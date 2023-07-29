@@ -50,7 +50,7 @@ __atuin_install_arch(){
 
 get_architecture() {
   local detected_arch
-  detected_arch=$(dpkg --print-architecture)
+  detected_arch=$(uname -m)
   case "$detected_arch" in
     x86_64)
       echo "64-bit architecture detected."
@@ -64,21 +64,16 @@ get_architecture() {
       echo "32-bit ARM architecture detected."
       ARCH="armhf" 
       ;;
-    aarch64)
+    aarch64|arm64)
       echo "64-bit ARM architecture detected."
       ARCH="arm64"
       ;;
-    arm64)
-    	echo "64-bit ARM architecture detected."
-    	ARCH="arm64"
-    	;;
     *)
       echo "Unknown or unsupported architecture: $detected_arch"
       exit 1
       ;;
   esac
 }
-
 
 __atuin_install_ubuntu(){
 	echo "Ubuntu detected"
