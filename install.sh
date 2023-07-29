@@ -68,6 +68,10 @@ get_architecture() {
       echo "64-bit ARM architecture detected."
       ARCH="arm64"
       ;;
+    arm64)
+    	echo "64-bit ARM architecture detected."
+    	ARCH="arm64"
+    	;;
     *)
       echo "Unknown or unsupported architecture: $detected_arch"
       exit 1
