@@ -6,7 +6,7 @@ LATEST_RELEASE=$(curl -L -s -H 'Accept: application/json' https://github.com/ell
 # Allow sed; sometimes it's more readable than ${variable//search/replace}
 # shellcheck disable=SC2001
 LATEST_VERSION=$(echo "$LATEST_RELEASE" | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/')
-
+ARCH="unknown"
 
 #####################################################################
 ######################  HELPER FUNCTIONS  ###########################
@@ -47,9 +47,11 @@ __atuin_install_arch(){
 	fi
 
 }
+
 get_architecture() {
-  ARCH=$(dpkg --print-architecture)
-  case "$ARCH" in
+  local detected_arch
+  detected_arch=$(dpkg --print-architecture)
+  case "$detected_arch" in
     x86_64)
       echo "64-bit architecture detected."
       ARCH="amd64"
@@ -67,11 +69,12 @@ get_architecture() {
       ARCH="arm64"
       ;;
     *)
-      echo "Unknown or unsupported architecture: $ARCH"
+      echo "Unknown or unsupported architecture: $detected_arch"
       exit 1
       ;;
   esac
 }
+
 
 __atuin_install_ubuntu(){
 	echo "Ubuntu detected"
