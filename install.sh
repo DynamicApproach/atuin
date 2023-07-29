@@ -47,11 +47,36 @@ __atuin_install_arch(){
 	fi
 
 }
+get_architecture() {
+  ARCH=$(dpkg --print-architecture)
+  case "$ARCH" in
+    x86_64)
+      echo "64-bit architecture detected."
+      ARCH="amd64"
+      ;;
+    i386|i486|i586|i686)
+      echo "32-bit architecture detected."
+      ARCH="i386"
+      ;;
+    armv7l)
+      echo "32-bit ARM architecture detected."
+      ARCH="armhf" 
+      ;;
+    aarch64)
+      echo "64-bit ARM architecture detected."
+      ARCH="arm64"
+      ;;
+    *)
+      echo "Unknown or unsupported architecture: $ARCH"
+      exit 1
+      ;;
+  esac
+}
 
 __atuin_install_ubuntu(){
 	echo "Ubuntu detected"
 	# TODO: select correct AARCH too
-	ARTIFACT_URL="https://github.com/ellie/atuin/releases/download/$LATEST_VERSION/atuin_${LATEST_VERSION//v/}_amd64.deb"
+  	ARTIFACT_URL="https://github.com/ellie/atuin/releases/download/$LATEST_VERSION/atuin_${LATEST_VERSION//v/}_${ARCH}.deb"
 	TEMP_DEB="$(mktemp)".deb &&
   curl -Lo "$TEMP_DEB" "$ARTIFACT_URL"
 	if command -v sudo &> /dev/null; then
