@@ -273,7 +273,7 @@ EOF
 
 check_command curl
 check_command sed
-
+get_architecture
 __print_intro
 
 # TODO: would be great to support others!
